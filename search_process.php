@@ -14,7 +14,9 @@
         
             $country = trim($_POST['country']);
 
-            $sql = "Select * from pitch_info where country='$country' ";
+            $sql = "Select * from pitch_info WHERE country LIKE '$country%' ";
+
+          //      LIKE '%A%'
 
             $result = mysqli_query($connection,$sql);
 
