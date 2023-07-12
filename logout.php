@@ -5,5 +5,5 @@
 
     echo "Logout Sucessfiully"."<br>";
 
-    echo "<a href='login.php'>Login</a>"
+    header("Location:login.php");
 ?>

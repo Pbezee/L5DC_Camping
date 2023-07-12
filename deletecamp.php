@@ -9,15 +9,14 @@
     }
 
     if($username == "admin")
-    {
-        
+    {  
 
         $id = $_GET['id'];
 
         $sql = "delete from pitch_info where id=$id ";   //value
 
         if(mysqli_query($connection,$sql))
-            echo "Successfully Deleted<br>";
+            header("Location: displaycamp.php");   
 
         else
         echo"Error in Delete! <br>";

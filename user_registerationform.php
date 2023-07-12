@@ -6,7 +6,7 @@
     <title>Register</title>
 </head>
 <body>
-        <h1>Login</h1>
+        <h1>User Register</h1>
 
         <form action='user_register_process.php' method='POST'>
             <div>First Name : <input type="text" name="fname"></div>
@@ -19,7 +19,7 @@
 
             <div>Country: 
                 <select name="country">
-                    <option>Choose Ur country</option>
+                    <option>Choose your country</option>
                 
 
                     <?php
@@ -30,8 +30,7 @@
                        // sort($country);
                     
                         foreach ($countries as $c) {
-                            echo "<option>$c</opiton>";
-                        
+                            echo "<option>$c</opiton>";                    
                         }
 
                     ?>

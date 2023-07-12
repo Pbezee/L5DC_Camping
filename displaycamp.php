@@ -4,36 +4,41 @@
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Camping List</title>
-    
+    <title>Camp Detail</title>
+    <link href="./style/style.css?<?php echo time();?>" rel="stylesheet">
+
 </head>
+
 <body>
-    <div class="container">
     <?php
-	$stylesheet_url = "./style/displaycampstyle.css";
+        include("navbar.php");
+         include("searchform.php");
     ?>
 
-    <?php
+    <div class="display-container">
+
+        <?php
     
     include("connection.php");
-
-    $username = $_SESSION['username'];
+   
     
-    $url = "style.css";
-        echo "<link rel='stylesheet' href='{$stylesheet_url}'>";
-//    $sql = "Select * from user where lname= 'Aye'  ";
+    
+    if(empty($_SESSION))
+    {
+        header("Location:login.php");
+    }
 
-//   $sql = "Select * from user where lname LIKE '%A%'  ";   // filter cha
-
-    $sql = "Select * from pitch_info";  //all pitches
+    if(isset($_SESSION['username'])){
+    $username = $_SESSION['username'];
+    }
+    $sql = "Select * from pitch_info ";  
 
     $result = mysqli_query($connection,$sql);
-
-    $num_rows = mysqli_num_rows($result);   //no connection
+    $num_rows = mysqli_num_rows($result);   
     $num_rows. "<hr>";
 
     if($num_rows == 0)
@@ -43,67 +48,81 @@
     {
         $count = $i+1;
 
-        $record = mysqli_fetch_assoc($result);  //associative array
-        echo "<div>";
-        
+        $record = mysqli_fetch_assoc($result);
 
+       
+
+        echo "<div class='camp-container'>";
+
+        
+  
         echo "<div class='name'>";
-        echo "<br><h3>$count. " .$record['pitch_name']. "</h3>";
+        echo "<br><h3>" .$record['pitch_name']. "</h3>";
+        echo "</div>";
+
+        echo"<div class='camp'>";
+
+        echo "<div class='img'>";
+        echo "<br><img src=' ".$record['photo']." '>";
         echo "</div>";
 
         echo "<div class='location'>";
-        echo "<br><iframe src= ' ".$record['location']." 'width = '400' height = '200'></iframe>" ;
+        echo "<br><iframe src= ' ".$record['location']." '></iframe>" ;
         echo "</div>";
 
-        echo "<div class = 'address'>";
-        echo "<br>Address :" .$record['address'];     
-        echo "</div>";
-
-        echo "<div class='general'>";
-        echo "<br>General :" .$record['general_info'];  
         echo "</div>";
 
         echo "<div class='country'>";
         echo "<br>Country :" .$record['country'];
         echo "</div>";
-    //    echo "<br>Photo :" .$record['photo'];
-        echo "<div class='img'>";
-        echo "<br><img src=' ".$record['photo']." 'width='500'>";
-        echo "</div>";
-
-
-        if($username=="admin"){
+        
+        if(is_null($username))
+        {
+            header("Location:login.php");
+        }
+        else if($username=="admin"){
 
             echo "<div class='link-style'>";
 
-            echo "<a href='pitchform.php?id=".$record['id']." '>Insert</a>";
+            echo "<a href='detail.php?id=".$record['id']." '>View More</a>";
 
-            echo " | <a href='updateform.php?id=".$record['id']." '>Update</a>";
+           $id = $record['id'];
 
-            echo " | <a href='deletecamp.php?id=".$record['id']." '>Delete</a>";
-
-            echo " | <a href='logout.php?id=".$record['id']." '>Logout</a>";
+            echo "<a class='del' href='#' onclick='deleteConfirm(".json_encode($id).")'>Delete</a>"; 
 
             echo "</div>";
-            
+            echo "<hr>";
         }
         else
-        {
-            echo "<a href='pitchform.php?id=".$record['id']." '>Insert</a>";
+        {        
+            echo "<div class='ulink'>";
+          
+            echo "<a href='detail.php?id=".$record['id']." '>View More</a>";
 
-            echo "<br><a href='updateform.php?id=".$record['id']." '>Update</a>";
-            
-            echo "<br><a href='deletecamp.php?id=".$record['id']." '>Delete</a>";
-        
-            echo "<br><a href='logout.php'>Logout</a>";
-     
-        }
-     
-        echo "<hr></div>";
-                
+            echo"</div>";
+
+            echo "<hr>";
+        } 
+        echo "</div>";
+         
     }
     }
     ?>
     </div>
+    <?php
+    include("footer.php");
+    ?>
+    <script type="text/javascript">
+    document.getElementById('page-name').innerHTML = "You are at <b>Camp List Page</b>";
+    </script>
+    <script type="text/javascript">
+    function deleteConfirm(id) {
+
+        if (confirm("Are you sure you want to delete?")) {
+            window.location = "deletecamp.php?id=" + id;
+        }
+    }
+    </script>
 </body>
+
 </html>

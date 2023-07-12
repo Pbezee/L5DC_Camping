@@ -11,7 +11,7 @@
     $host = "localhost";
     $username = "root";
     $password = "";
-    $dbname = "userdb";
+    $dbname = "campingdb";
 
     $connection = mysqli_connect($host,$username,$password,$dbname);
         
@@ -38,8 +38,10 @@
                         values('$fname', '$lname', '$uname', '$password', '$phone', '$email', '$country') ";
 
                         if(mysqli_query($connection, $sql))
+                        {
                             echo "User create complete";
-        
+                            header("Location:login.php");
+                        }
                         else
                             echo "Error creating User";
                     }
